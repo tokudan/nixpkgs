@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, dovecot, openssl }:
+{ stdenv, fetchurl, fetchpatch, dovecot, openssl }:
 
 stdenv.mkDerivation rec {
   pname = "dovecot-pigeonhole";
@@ -24,6 +24,14 @@ stdenv.mkDerivation rec {
     "--with-dovecot=${dovecot}/lib/dovecot"
     "--without-dovecot-install-dirs"
     "--with-moduledir=$(out)/lib/dovecot"
+  ];
+
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/dovecot/pigeonhole/commit/3defbec146e195edad336a2c218f108462b0abd7.diff";
+      sha256 = "09mvdw8gjzq9s2l759dz4aj9man8q1akvllsq2j1xa2qmwjfxarp";
+      stripLen = 1;
+    })
   ];
 
   enableParallelBuilding = true;
